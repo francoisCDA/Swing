@@ -19,8 +19,8 @@ public class Main {
 
         //jFrame.add(new BorderLayoutDemo());
         //jFrame.add(new FlowLayoutDemo().getJPanel());
-       // jFrame.add(new GridLayoutDemo().getJPanel());
-        jFrame.add(new GridBagLayoutDemo().getJPanel());
+        jFrame.add(new GridLayoutDemo().getJPanel());
+        //jFrame.add(new GridBagLayoutDemo().getJPanel());
 
 
         jFrame.setVisible(true);
