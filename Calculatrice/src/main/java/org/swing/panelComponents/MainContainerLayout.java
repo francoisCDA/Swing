@@ -34,7 +34,6 @@ public class MainContainerLayout extends JPanel {
         affichage = new JLabel(resultat);
 
 
-
         GridBagConstraints affichageConstraint = new GridBagConstraints();
 
         affichageConstraint.gridx = 3;
@@ -45,19 +44,6 @@ public class MainContainerLayout extends JPanel {
        // affichageConstraint.fill = GridBagConstraints.BOTH;
         add(affichage,affichageConstraint);
 
-
-//        touchesPanel = new TouchesPanel();
-//
-//        GridBagConstraints touchesConstraint = new GridBagConstraints();
-//
-//        touchesConstraint.gridx = 0;
-//        touchesConstraint.gridy = 1;
-//
-//        touchesConstraint.weightx = 1 ;
-//        touchesConstraint.weighty = 6 ;
-//
-//
-//        add(touchesPanel,touchesConstraint);
 
         JButton buttonC = new JButton("C");
         buttonC.addActionListener(e -> toucheC() );
@@ -231,7 +217,7 @@ public class MainContainerLayout extends JPanel {
         GridBagConstraints constraints0 = new GridBagConstraints();
         constraints0.gridx = 0;
         constraints0.gridy = 5;
-        constraints0.weightx = 2;   //aucun effet ??
+        constraints0.gridwidth = 2;   //aucun effet ??
         constraints0.weighty = 1;
         constraints0.fill = GridBagConstraints.BOTH;
         add(button0,constraints0);
@@ -284,12 +270,6 @@ public class MainContainerLayout extends JPanel {
 
             Double nombre2 = Double.parseDouble(resultat);
 
-//            if (nombre2.equals(0) && operateur.equals("/")) {
-//                nombre1 = null;
-//                resultat = "";
-//                affichage.setText("ERROR");
-//                return;
-//            };
 
             switch (operateur) {
                 case "+" -> nombre1 += nombre2;
@@ -298,7 +278,6 @@ public class MainContainerLayout extends JPanel {
                 case "/" -> nombre1 /= nombre2;
             }
 
-//            operateur = "next";
             operateur = ope;
 
             if (operateur.equals("=")) operateur = "";
@@ -314,7 +293,7 @@ public class MainContainerLayout extends JPanel {
 
     private void handleNumber(Integer i) {
             if (!operateur.isEmpty() && !resultat.endsWith(".")) {
-                resultat = i.toString();
+                resultat += i.toString();
             }else {
                 resultat += i.toString();
             }
