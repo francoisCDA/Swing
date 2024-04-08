@@ -41,20 +41,14 @@ public class TaquinLayout {
 
         for (int i = 0 ; i < size ; i ++) {
             for (int j = 0 ; j < size ; j++) {
-
                 if (i == freeX && j == freeY) {
                     break;
                 }
-
                 int label = ++count;
-
                 addButton(j,i,Integer.toString(label));
             }
-
         }
-
         randomMove(randMove);
-
     }
 
 
@@ -62,7 +56,7 @@ public class TaquinLayout {
 
         JButton newButton = new JButton(label);
         newButton.addActionListener(e -> {
-            if ( abs(x-freeY) == 1 ^ abs(y-freeX) == 1   ) {
+            if (  (abs(x-freeY) == 1 && y == freeX ) ^ (abs(y-freeX) == 1 && x == freeY )   ) {
                 addButton(freeY,freeX,label);
                 freeY = x;
                 freeX = y;
@@ -71,13 +65,21 @@ public class TaquinLayout {
             }
         });
 
+        newButton.setBackground(Color.GREEN);
+        newButton.setForeground(Color.DARK_GRAY);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD,  30);
+        newButton.setFont(font);
+
+
+
 
         GridBagConstraints contraintes = new GridBagConstraints();
 
         contraintes.fill = GridBagConstraints.BOTH;
-
         contraintes.gridx = x ;
         contraintes.gridy = y ;
+        contraintes.weightx = 1;
+        contraintes.weighty = 1;
 
         panel.add(newButton,contraintes);
 
@@ -92,16 +94,9 @@ public class TaquinLayout {
         Random rand = new Random();
 
         for (int i = 0 ; i < nb ; i++) {
-
             int index = rand.nextInt(size*size -1) ;
-
             JButton buttonToClic = pave.get(index);
-
             buttonToClic.doClick();
-
         }
-
-
     }
-
 }
