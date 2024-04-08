@@ -89,6 +89,7 @@ public class MainContainerLayout extends JPanel {
         add(buttonPC,constraintsPC);
 
         JButton buttonDiv = new JButton("/");
+        buttonDiv.addActionListener(e -> handleOperator("/"));
         GridBagConstraints constraintsDiv = new GridBagConstraints();
         constraintsDiv.gridx = 3;
         constraintsDiv.gridy = 1;
@@ -276,19 +277,19 @@ public class MainContainerLayout extends JPanel {
             return;
         }
 
-        if (operateur.isEmpty()) {
+        if (operateur.isEmpty() && !resultat.isEmpty()) {
             operateur = ope;
             nombre1 = Double.parseDouble(resultat);
         } else {
 
-            double nombre2 = Double.parseDouble(resultat);
+            Double nombre2 = Double.parseDouble(resultat);
 
-            if (nombre2 == 0.0 && operateur.equals("/")) {
-                nombre1 = null;
-                resultat = "";
-                affichage.setText("ERROR");
-                return;
-            };
+//            if (nombre2.equals(0) && operateur.equals("/")) {
+//                nombre1 = null;
+//                resultat = "";
+//                affichage.setText("ERROR");
+//                return;
+//            };
 
             switch (operateur) {
                 case "+" -> nombre1 += nombre2;
@@ -297,7 +298,10 @@ public class MainContainerLayout extends JPanel {
                 case "/" -> nombre1 /= nombre2;
             }
 
-            operateur = "next";
+//            operateur = "next";
+            operateur = ope;
+
+            if (operateur.equals("=")) operateur = "";
 
             resultat = nombre1.toString();
 
