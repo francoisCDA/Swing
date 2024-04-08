@@ -1,5 +1,6 @@
 package org.swing;
 
+import org.swing.component.Table;
 import org.swing.layout.*;
 
 import javax.swing.*;
@@ -19,7 +20,9 @@ public class Main {
         //jFrame.add(new GridLayoutDemo().getJPanel());
         //jFrame.add(new GridBagLayoutDemo().getJPanel());
 
-        jFrame.add(new BoxLayoutDemo().getPanel());
+        //jFrame.add(new BoxLayoutDemo().getPanel());
+
+        jFrame.add(new Table().getJtb());
 
 
         jFrame.setVisible(true);

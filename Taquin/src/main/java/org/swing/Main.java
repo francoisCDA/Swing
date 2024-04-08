@@ -14,8 +14,6 @@ public class Main {
 
         jFrame.add(new TaquinLayout(5,100).getPanel());
 
-
-
         jFrame.setVisible(true);
     }
 }

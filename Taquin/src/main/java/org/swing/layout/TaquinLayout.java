@@ -70,9 +70,6 @@ public class TaquinLayout {
         Font font = new Font(Font.SANS_SERIF, Font.BOLD,  30);
         newButton.setFont(font);
 
-
-
-
         GridBagConstraints contraintes = new GridBagConstraints();
 
         contraintes.fill = GridBagConstraints.BOTH;
@@ -97,6 +94,7 @@ public class TaquinLayout {
             int index = rand.nextInt(size*size -1) ;
             JButton buttonToClic = pave.get(index);
             buttonToClic.doClick();
+
         }
     }
 }
