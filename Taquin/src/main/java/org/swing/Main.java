@@ -12,7 +12,9 @@ public class Main {
         jFrame.setSize(600,600);
         jFrame.setLocationRelativeTo(null);
 
-        jFrame.add(new TaquinLayout(3).getPanel());
+        jFrame.add(new TaquinLayout(5,100).getPanel());
+
+
 
         jFrame.setVisible(true);
     }

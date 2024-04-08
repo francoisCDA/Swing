@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.lang.Math.abs;
 
@@ -23,7 +24,7 @@ public class TaquinLayout {
     private int freeX;
     private int freeY;
 
-    public TaquinLayout(int size) {
+    public TaquinLayout(int size, int randMove) {
 
         this.size = size;
 
@@ -50,8 +51,9 @@ public class TaquinLayout {
                 addButton(j,i,Integer.toString(label));
             }
 
-
         }
+
+        randomMove(randMove);
 
     }
 
@@ -65,8 +67,10 @@ public class TaquinLayout {
                 freeY = x;
                 freeX = y;
                 panel.remove(newButton);
+                pave.remove(newButton);
             }
         });
+
 
         GridBagConstraints contraintes = new GridBagConstraints();
 
@@ -77,9 +81,27 @@ public class TaquinLayout {
 
         panel.add(newButton,contraintes);
 
+        pave.add(newButton);
+
         panel.revalidate();
         panel.repaint();
     }
 
+    private void randomMove(int nb) {
+
+        Random rand = new Random();
+
+        for (int i = 0 ; i < nb ; i++) {
+
+            int index = rand.nextInt(size*size -1) ;
+
+            JButton buttonToClic = pave.get(index);
+
+            buttonToClic.doClick();
+
+        }
+
+
+    }
 
 }
