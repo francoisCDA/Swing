@@ -74,10 +74,8 @@ public class TodoLayout extends JPanel {
         JButton completeButton = new JButton("Complete",icone);
         completeButton.addActionListener(e -> {
             if (selectedTodoIdx != null) {
-                String task = listItems.get(selectedTodoIdx) + " - COMPLETED !";
-
-                listItems.remove(selectedTodoIdx);
-                listItems.addElement(task);
+                String task = "<html><strike>" + listItems.get(selectedTodoIdx) + "</strike></html>";
+                listItems.set(selectedTodoIdx,task);
                 selectedTodoIdx = null;
             }
         });
