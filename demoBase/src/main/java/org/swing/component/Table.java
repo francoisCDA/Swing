@@ -10,6 +10,8 @@ import java.sql.SQLOutput;
 @Data
 public class Table {
 
+    private JScrollPane scrollPane;
+
     private JTable jtb;
 
     public Table() {
@@ -26,21 +28,23 @@ public class Table {
 
         jtb.setBounds(30,40,500,500);
 
-        JScrollPane scrollPane = new JScrollPane(jtb);
+        scrollPane = new JScrollPane(jtb);
 
         jtb.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
-                int row = jtb.getSelectedRow();
+                if (!e.getValueIsAdjusting()){
+                    int row = jtb.getSelectedRow();
 
-                if (row < 0) {
-                    System.out.println("Le tableau est vide");
-                } else {
+                    if (row < 0) {
+                        System.out.println("Le tableau est vide");
+                    } else {
 
-                    int modelRow = jtb.convertRowIndexToModel(row);
+                        int modelRow = jtb.convertRowIndexToModel(row);
 
-                    System.out.println(String.format("Info selectect in: %d. Dans model : %d. Autre info %s, %s, %s",row,modelRow,jtb.getModel().getValueAt(modelRow,0),jtb.getModel().getValueAt(modelRow,1),jtb.getModel().getValueAt(modelRow,2)));
+                        System.out.println(String.format("Info selectect in: %d. Dans model : %d. Autre info %s, %s, %s",row,modelRow,jtb.getModel().getValueAt(modelRow,0),jtb.getModel().getValueAt(modelRow,1),jtb.getModel().getValueAt(modelRow,2)));
+                    }
                 }
             }
         });
