@@ -15,6 +15,10 @@ public class MainLayout extends JPanel {
         add(new Formulaire(),BorderLayout.NORTH);
         add(UserTable.getUserTable().getScrollPane(),BorderLayout.CENTER);
 
+
+
     }
+
+
 
 }

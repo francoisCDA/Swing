@@ -19,15 +19,10 @@ public class UserTable extends JPanel {
     private final String[] colum = {"Name","Email","Genre"};
 
     private UserTable() {
-
         rows = userService.getUsers();
-
         table = new JTable(rows,colum);
-
         table.setBounds(30,40,200,300);
-
         scrollPane = new JScrollPane(table);
-
     }
 
     public static void update() {
