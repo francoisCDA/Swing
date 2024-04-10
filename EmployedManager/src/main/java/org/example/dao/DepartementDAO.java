@@ -5,10 +5,13 @@ import org.example.model.Role;
 import org.example.model.Salarie;
 import org.example.util.ConnexionDB;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DepartementDAO {
 
@@ -54,29 +57,68 @@ public class DepartementDAO {
             ResultSet result = prepStat.executeQuery();
 
             if (result.next()) {
-                Departement dept = new Departement();
-                dept.setId(result.getInt("id_dept"));
-                dept.setName(result.getString("name"));
+                if (ret.getSalaries() == null) {
+                    ret.setId(result.getInt("id_dept"));
+                    ret.setName(result.getString("name"));
+                    ret.setSalaries(new ArrayList<>());
+                }
 
-                Salarie ret = new Salarie();
+                Salarie sala = new Salarie();
 
-                ret.setId(result.getInt("id"));
-                ret.setDepartement(dept);
-                ret.setFirstname(result.getString("firstname"));
-                ret.setLastname(result.getString("lastname"));
-                ret.setRole(Role.valueOf(result.getString("role")));
+                sala.setId(result.getInt("id"));
+                sala.setDepartement(ret);
+                sala.setFirstname(result.getString("firstname"));
+                sala.setLastname(result.getString("lastname"));
+                sala.setRole(Role.valueOf(result.getString("role")));
 
-
+                ret.getSalaries().add(sala);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return null;
-
+        return ret;
     }
 
+
+    public int updateDepartement(Departement departement) {
+        connection = ConnexionDB.getConnection();
+
+        try {
+            prepStat = connection.prepareStatement("UPDATE `departement` SET `name` = ? WHERE id_dept = ?");
+            prepStat.setString(1,departement.getName());
+            prepStat.setInt(2,departement.getId());
+
+            return prepStat.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Departement> getAllDepartement() {
+        connection = ConnexionDB.getConnection();
+        List<Departement> ret = new ArrayList<>();
+
+        try {
+            ResultSet rs = connection.createStatement().executeQuery("SELECT d.name, d.id_dept, COUNT(s.id_sal) AS nb_salaries FROM departement d JOIN salarie s ON d.id_dept = s.departement_id GROUP BY d.name, d.id_dept");
+
+            while (rs.next()) {
+                Departement departement = new Departement();
+                departement.setId(rs.getInt("id_dept"));
+                departement.setName(rs.getString("name"));
+                departement.setNbSalaries(rs.getInt("nb_salaries"));
+
+                ret.add(departement);
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ret;
+    }
 
 
 }
