@@ -1,6 +1,9 @@
 package org.cda.view;
 
+import org.cda.view.dialog.DeleteDialog;
+import org.cda.view.dialog.DisplayDialog;
 import org.cda.view.dialog.InsertDialog;
+import org.cda.view.dialog.UpdateDialog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -53,21 +56,49 @@ public class MainFrame extends JFrame {
             }
         });
 
-
         JButton btnUpdate = new JButton("Update");
         btnUpdate.setBounds(130,40 ,100,35);
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpdateDialog dialog = new UpdateDialog();
+                dialog.setLocationRelativeTo(jPanel);
+                dialog.setVisible(true);
+            }
+        });
+
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.setBounds(230,40 ,100,35);
 
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DeleteDialog dialog = new DeleteDialog();
+
+                dialog.setLocationRelativeTo(jPanel);
+                dialog.setVisible(true);
+            }
+        });
+
         JButton btnDisplay = new JButton("Display");
         btnDisplay.setBounds(130,90 ,100,35);
+
+        btnDisplay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DisplayDialog dialog = new DisplayDialog();
+
+                dialog.setLocationRelativeTo(jPanel);
+                dialog.setVisible(true);
+            }
+        });
+
 
         jPanel.add(btnInsert);
         jPanel.add(btnUpdate);
         jPanel.add(btnDisplay);
         jPanel.add(btnDelete);
-
 
 
     }

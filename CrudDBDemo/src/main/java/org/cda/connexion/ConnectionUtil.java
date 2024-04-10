@@ -9,10 +9,10 @@ public class ConnectionUtil  {
     public static Connection getConnection(){
 
         try {
-            Class.forName("\"com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             String database = "cruddbswing";
-            String url = "jdbc:mysql://ocalhost:3306/";
-            Connection con = DriverManager.getConnection(url+ database,"root","admin");
+            String url = "jdbc:mysql://localhost:3306/";
+            Connection con = DriverManager.getConnection(url + database,"root","admin");
             return con;
 
         } catch (ClassNotFoundException | SQLException e) {

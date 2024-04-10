@@ -14,6 +14,8 @@ public class InsertDialog extends JDialog {
 
     public InsertDialog() {
 
+        setSize(600,150);
+
         JLabel labelName = new JLabel("Nom");
         JTextField inputName = new JTextField(20);
 
