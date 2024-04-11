@@ -41,4 +41,14 @@ public class DepartementService {
         }
         return null;
     }
+
+    public void remove(Departement dept) {
+
+        departementDAO.rmDepartementById(dept.getId());
+
+    }
+
+    public void updDepartementName(Departement dept) {
+        departementDAO.updateDepartement(dept);
+    }
 }

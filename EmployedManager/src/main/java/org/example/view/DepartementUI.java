@@ -32,8 +32,6 @@ public class DepartementUI extends JFrame {
 
         JList<Departement> listDepartement = new JList<>(departementListModel);
 
-
-
         JPanel buttonPanel = new JPanel();
 
         JButton addButton = new JButton("Ajouter");
@@ -93,6 +91,60 @@ public class DepartementUI extends JFrame {
 
         });
 
+        removeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Departement dept = listDepartement.getSelectedValue();
+                if (dept != null) {
+                    service.remove(dept);
+                    updDept();
+                }
+            }
+        });
+
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Departement dept = listDepartement.getSelectedValue();
+
+                dialog = new JDialog();
+                dialog.setSize(300, 200);
+                dialog.setLocationRelativeTo(null);
+                dialog.setModal(true);
+                dialog.setTitle("Modifier un departement");
+
+                JLabel labelName = new JLabel("Nom du departement");
+                JTextField inputName = new JTextField(20);
+                JPanel inputPanel = new JPanel();
+                inputPanel.add(inputName);
+                JButton okButtonModal = new JButton("OK");
+                JButton cancelButtonModal = new JButton("Annuler");
+                okButtonModal.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        String name = inputName.getText();
+                        dept.setName(name);
+                        service.updDepartementName(dept);
+                        updDept();
+                        dialog.dispose();
+                    }
+                });
+
+                cancelButtonModal.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.dispose();
+                    }
+                });
+
+                JPanel buttonPanelModal = new JPanel();
+                buttonPanelModal.add(okButtonModal);
+                buttonPanelModal.add(cancelButtonModal);
+
+                dialog.getContentPane().add(labelName, BorderLayout.NORTH);
+                dialog.getContentPane().add(inputPanel, BorderLayout.CENTER);
+                dialog.getContentPane().add(buttonPanelModal, BorderLayout.SOUTH);
+
+                dialog.setVisible(true);
+
+            }
+        });
 
         salariesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
