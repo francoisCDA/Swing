@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DepartementUI extends JFrame {
 
@@ -25,7 +26,14 @@ public class DepartementUI extends JFrame {
 
         DefaultListModel<Departement> departementListModel = new DefaultListModel<>();
 
+        List<Departement> deptList = service.getAllDept();
+
         JList<Departement> listDepartement = new JList<>(departementListModel);
+
+        for (Departement dept : deptList) {
+
+            departementListModel.addElement(dept);
+        }
 
         JPanel buttonPanel = new JPanel();
 

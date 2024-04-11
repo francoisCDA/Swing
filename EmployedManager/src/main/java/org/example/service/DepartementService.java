@@ -3,6 +3,8 @@ package org.example.service;
 import org.example.dao.DepartementDAO;
 import org.example.model.Departement;
 
+import java.util.List;
+
 
 public class DepartementService {
 
@@ -12,5 +14,9 @@ public class DepartementService {
 
         departementDAO.addDept(departement);
 
+    }
+
+    public List<Departement> getAllDept() {
+        return departementDAO.getAllDepartement();
     }
 }

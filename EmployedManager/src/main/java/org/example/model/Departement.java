@@ -22,7 +22,7 @@ public class Departement {
         return "Departement info : " +
                 "id = " + id +
                 ", name = " + name +
-                ", nombre de salariés =" + nbSalaries ;
+                ", nombre de salariés = " + nbSalaries ;
     }
 }
 
