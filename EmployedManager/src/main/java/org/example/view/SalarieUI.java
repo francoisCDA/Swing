@@ -181,6 +181,17 @@ public class SalarieUI extends JFrame {
             }
         });
 
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int target = salarieTable.getSelectedRow();
+                String deptName = (String) salarieTable.getValueAt(target,4);
+                Departement dept = departementService.getDeptByName(deptName);
+
+
+
+
+            }
+        });
 
         add(new JScrollPane(salarieTable), BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
