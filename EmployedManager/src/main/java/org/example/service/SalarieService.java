@@ -14,6 +14,9 @@ public class SalarieService {
         this.salarieDAO = new SalarieDAO();
     }
 
+    public void save(Salarie salarie) {
+        salarieDAO.addSalarie(salarie);
+    }
 
     public List<Salarie> getAll() {
         return salarieDAO.getAllSalaries();
@@ -29,6 +32,14 @@ public class SalarieService {
         }
 
         return salariesRows;
+
+    }
+
+    public void rmSalarieById(String idString) {
+
+        int id = Integer.parseInt(idString);
+
+        salarieDAO.rmSalarieById(id);
 
     }
 }

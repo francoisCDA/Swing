@@ -14,6 +14,8 @@ public class DepartementUI extends JFrame {
 
     private final DepartementService service = new DepartementService();
 
+    private DefaultListModel<Departement> departementListModel;
+
     private JDialog dialog;
 
     public DepartementUI() {
@@ -24,16 +26,13 @@ public class DepartementUI extends JFrame {
         setLayout(new BorderLayout());
 
 
-        DefaultListModel<Departement> departementListModel = new DefaultListModel<>();
+        departementListModel = new DefaultListModel<>();
 
-        List<Departement> deptList = service.getAllDept();
+        updDept();
 
         JList<Departement> listDepartement = new JList<>(departementListModel);
 
-        for (Departement dept : deptList) {
 
-            departementListModel.addElement(dept);
-        }
 
         JPanel buttonPanel = new JPanel();
 
@@ -66,8 +65,8 @@ public class DepartementUI extends JFrame {
                         Departement departement = new Departement();
                         departement.setName(name);
                         departement.setSalaries(new ArrayList<>());
-                        departementListModel.addElement(departement);
                         service.save(departement);
+                        updDept();
                         dialog.dispose();
                     }
                 });
@@ -109,7 +108,15 @@ public class DepartementUI extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
         add(new JScrollPane(listDepartement), BorderLayout.CENTER);
 
+    }
 
+
+    private void updDept(){
+        List<Departement> deptList = service.getAllDept();
+        departementListModel.clear();
+        for (Departement dept : deptList) {
+            departementListModel.addElement(dept);
+        }
     }
 
 }

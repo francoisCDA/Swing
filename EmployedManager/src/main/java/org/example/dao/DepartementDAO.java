@@ -101,7 +101,7 @@ public class DepartementDAO {
         List<Departement> ret = new ArrayList<>();
 
         try {
-            ResultSet rs = connection.createStatement().executeQuery("SELECT d.name, d.id_dept, COUNT(s.id_sal) AS nb_salaries FROM departement d JOIN salarie s ON d.id_dept = s.departement_id GROUP BY d.name, d.id_dept");
+            ResultSet rs = connection.createStatement().executeQuery("SELECT d.name, d.id_dept, COUNT(s.id_sal) AS nb_salaries FROM departement d LEFT JOIN salarie s ON d.id_dept = s.departement_id GROUP BY d.name, d.id_dept");
 
             while (rs.next()) {
                 Departement departement = new Departement();

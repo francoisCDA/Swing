@@ -19,4 +19,26 @@ public class DepartementService {
     public List<Departement> getAllDept() {
         return departementDAO.getAllDepartement();
     }
+
+    public String[] getDeptName() {
+
+        List<Departement> deptList = departementDAO.getAllDepartement();
+        String[] deptName = new String[deptList.size()];
+        for (int i = 0; i < deptList.size(); i++) {
+            deptName[i] = deptList.get(i).getName();
+        }
+
+        return deptName;
+    }
+
+    public Departement getDeptByName(String deptName) {
+
+        List<Departement> deptList = getAllDept();
+        for (int i = 0; i < deptList.size(); i++) {
+            if (deptList.get(i).getName().equals(deptName)) {
+                return deptList.get(i);
+            }
+        }
+        return null;
+    }
 }

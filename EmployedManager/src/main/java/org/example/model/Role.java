@@ -1,7 +1,7 @@
 package org.example.model;
 
 public enum Role {
-    MANANGER,
+    MANAGER,
     EMPLOYE,
     RH
 }

@@ -25,7 +25,7 @@ public class SalarieDAO {
         connection = ConnexionDB.getConnection();
 
         try {
-            prepStat = connection.prepareStatement("INSERT INTO `salarie` (`firstname`,`lastname`,`role`,`departement`) values (?,?,?,?)");
+            prepStat = connection.prepareStatement("INSERT INTO `salarie` (`firstname`,`lastname`,`role`,`departement_id`) values (?,?,?,?)");
             prepStat.setString(1,salarie.getFirstname());
             prepStat.setString(2,salarie.getLastname());
             prepStat.setString(3,salarie.getRole().toString());
@@ -118,7 +118,7 @@ public class SalarieDAO {
 
                 Salarie sala = new Salarie();
 
-                sala.setId(result.getInt("id"));
+                sala.setId(result.getInt("id_sal"));
                 sala.setDepartement(dept);
                 sala.setFirstname(result.getString("firstname"));
                 sala.setLastname(result.getString("lastname"));
