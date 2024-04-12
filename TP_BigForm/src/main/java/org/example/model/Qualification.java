@@ -9,5 +9,9 @@ public enum Qualification {
     BTS,
     DEUG,
     DUT,
-    BAC
+    BAC,
+    BEPC
 }
+
+
+

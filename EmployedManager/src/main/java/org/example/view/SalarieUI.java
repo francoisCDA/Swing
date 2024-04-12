@@ -187,9 +187,6 @@ public class SalarieUI extends JFrame {
                 String deptName = (String) salarieTable.getValueAt(target,4);
                 Departement dept = departementService.getDeptByName(deptName);
 
-
-
-
             }
         });
 
