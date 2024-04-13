@@ -87,17 +87,11 @@ public class EmployeeDAO {
     public int updateEmployee(Employee emp) throws SQLException {
         con = ConnectDB.getConnection();
 
-//        try {
             ps = con.prepareStatement("UPDATE employee SET name = ? , age = ? , is_female = ? , address = ? , qualification = ? , bloodtype = ?, phone = ?, start_date = ?, photoPath = ?  WHERE id = ? ");
             prepareEmployee(emp);
             ps.setInt(10, emp.getId());
 
             return ps.executeUpdate();
-
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-
     }
 
     public int deleteEmployee(int id) throws SQLException {
@@ -149,7 +143,6 @@ public class EmployeeDAO {
         ps.setInt(2, employeeId);
 
         return ps.executeUpdate();
-
     }
 
     public List<Employee> getEmployeesIdLike(int employeeId) throws SQLException {
@@ -167,7 +160,6 @@ public class EmployeeDAO {
             ret.add(emp);
         }
         return ret;
-
     }
 
     public List<Employee> getEmployeesNameLike(String searchData) throws SQLException {
@@ -185,6 +177,5 @@ public class EmployeeDAO {
             ret.add(emp);
         }
         return ret;
-
     }
 }

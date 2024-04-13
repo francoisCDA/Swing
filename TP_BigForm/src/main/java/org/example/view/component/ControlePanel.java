@@ -2,20 +2,17 @@ package org.example.view.component;
 
 import org.example.controller.EmployeeController;
 import org.example.model.Employee;
-import org.example.model.Qualification;
-import org.example.util.SavePhoto;
+import org.example.util.PhotoUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class ControlePanel extends JPanel {
 
@@ -26,42 +23,59 @@ public class ControlePanel extends JPanel {
 
     private JDialog modal;
 
-    public ControlePanel(EmployeeController employeeController, Employee employee, JTable employeeTable, Border border) {
-        this.employeeController = employeeController;
+    public ControlePanel(EmployeeController emplCntrl, Employee employee, JTable emplTble, Border border) {
+        this.employeeController = emplCntrl;
         setLayout(new FlowLayout());
-        setBorder(border);
+
+        Border mainPadding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        Border mainBorder = BorderFactory.createCompoundBorder(mainPadding, border);
+
+        setBorder(mainBorder);
 
         activeEmployee = employee;
-        this.employeeTable = employeeTable;
+        this.employeeTable = emplTble;
 
 
         JLabel searchLabel = new JLabel("Search");
         JTextField searchField = new JTextField(10);
-        JButton newButton = new JButton("New");
-        JButton saveButton = new JButton("Save");
+        JButton newButton = new JButton("New",PhotoUtil.getIcone("src/main/resources/icone/plus.png",22));
+        JButton saveButton = new JButton("Save",PhotoUtil.getIcone("src/main/resources/icone/disquette.png",22));
         saveButton.setEnabled(false);
-        JButton updateButton = new JButton("Update");
-        JButton deleteButton = new JButton("Delete");
-        JButton clearButton = new JButton("Clear");
+        JButton updateButton = new JButton("Update",PhotoUtil.getIcone("src/main/resources/icone/mise-a-jour.png",22));
+        JButton deleteButton = new JButton("Delete",PhotoUtil.getIcone("src/main/resources/icone/supprimer.png",22));
+        JButton clearButton = new JButton("Clear",PhotoUtil.getIcone("src/main/resources/icone/effacer.png",22));
+        JButton printButton = new JButton("Print",PhotoUtil.getIcone("src/main/resources/icone/imprimante.png",22));
 
-        JButton printButton = new JButton("Print/Test");
+
         printButton.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(activeEmployee.toString());
+                JOptionPane.showMessageDialog(ControlePanel.this, "Check your console");
             }
 
         });
 
-
         newButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                saveButton.setEnabled(true);
-                updateButton.setEnabled(false);
-                deleteButton.setEnabled(false);
-                //clearButton.setEnabled(false);
-                searchField.setEnabled(false);
-                newButton.setEnabled(false);
-                activeEmployee.reset();
+
+                if (newButton.getText().equals("New")) {
+                    saveButton.setEnabled(true);
+                    updateButton.setEnabled(false);
+                    deleteButton.setEnabled(false);
+                    searchField.setEnabled(false);
+                    newButton.setText("Cancel");
+                    newButton.setIcon(PhotoUtil.getIcone("src/main/resources/icone/bouton-supprimer.png",22));
+
+                } else {
+                    saveButton.setEnabled(false);
+                    updateButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
+                    searchField.setEnabled(true);
+                    newButton.setText("New");
+                    newButton.setIcon(PhotoUtil.getIcone("src/main/resources/icone/plus.png",22));
+
+                }
+                    activeEmployee.reset();
             }
         });
 
@@ -76,7 +90,7 @@ public class ControlePanel extends JPanel {
 
                     if ( employedID != 0 ) {
 
-                        String newPath = SavePhoto.path(activeEmployee.getPhotoPath(), employedID);
+                        String newPath = PhotoUtil.path(activeEmployee.getPhotoPath(), employedID);
                         activeEmployee.setPhotoPath(newPath);
 
                         if (employeeController.updatePath(employedID, newPath)) {
@@ -97,9 +111,10 @@ public class ControlePanel extends JPanel {
                 saveButton.setEnabled(false);
                 updateButton.setEnabled(true);
                 deleteButton.setEnabled(true);
-                //clearButton.setEnabled(true);
                 searchField.setEnabled(true);
-                newButton.setEnabled(true);
+                newButton.setText("New");
+                newButton.setIcon(PhotoUtil.getIcone("src/main/resources/icone/plus.png",22));
+
                 activeEmployee.reset();
             }
         });
@@ -113,7 +128,7 @@ public class ControlePanel extends JPanel {
                     String currentDirectory = System.getProperty("user.dir");
 
                     if (!activeEmployee.getPhotoPath().startsWith(currentDirectory)) {
-                        String newPath = SavePhoto.path(activeEmployee.getPhotoPath(), activeEmployee.getId());
+                        String newPath = PhotoUtil.path(activeEmployee.getPhotoPath(), activeEmployee.getId());
                         activeEmployee.setPhotoPath(newPath);
                     }
 
@@ -164,8 +179,6 @@ public class ControlePanel extends JPanel {
                     JOptionPane.showMessageDialog(ControlePanel.this, "Choose an employee to delete");
                 }
 
-
-
             }
         });
 
@@ -207,8 +220,6 @@ public class ControlePanel extends JPanel {
 
             }
         });
-
-
 
         add(searchLabel);
         add(searchField);

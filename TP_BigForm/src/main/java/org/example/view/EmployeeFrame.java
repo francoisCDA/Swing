@@ -58,7 +58,6 @@ public class EmployeeFrame extends JFrame {
         });
 
 
-
         JScrollPane tableScrollPane = new JScrollPane(employeeTable);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -68,7 +67,6 @@ public class EmployeeFrame extends JFrame {
         mainPanel.add(tableScrollPane, BorderLayout.SOUTH);
 
         add(mainPanel);
-
     }
 
 

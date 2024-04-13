@@ -4,18 +4,16 @@ import com.sun.source.tree.TryTree;
 import com.toedter.calendar.JDateChooser;
 import org.example.model.Employee;
 import org.example.model.Qualification;
+import org.example.util.PhotoUtil;
 import org.example.view.component.listener.DateListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
@@ -23,13 +21,17 @@ import java.sql.Date;
 
 public class FormulairePanel extends JPanel {
 
-    private Employee employee;
+    private Employee activeEmployee;
 
-    public Employee getEmployee() {return employee;}
 
-    public FormulairePanel(Employee employee, Border border) {
-        this.employee = employee;
-        setBorder(border);
+    public FormulairePanel(Employee employe, Border border) {
+        this.activeEmployee = employe;
+
+        Border mainPadding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        Border mainBorder = BorderFactory.createCompoundBorder(mainPadding, border);
+
+        setBorder(mainBorder);
+
         setPreferredSize(new Dimension(810, 280));
 
         setLayout(new BorderLayout());
@@ -49,11 +51,11 @@ public class FormulairePanel extends JPanel {
                             idField.setEditable(false);
                             idField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
-                        employee.addPropertyChangeListener("id", new PropertyChangeListener() {
+                         activeEmployee.addPropertyChangeListener("id", new PropertyChangeListener() {
                             @Override
                             public void propertyChange(PropertyChangeEvent evt) {
-                                if (employee.getId() != null) {
-                                    idField.setText(employee.getId().toString());
+                                if (activeEmployee.getId() != null) {
+                                    idField.setText(activeEmployee.getId().toString());
                                 } else {
                                     idField.setText("");
                                 }
@@ -88,13 +90,13 @@ public class FormulairePanel extends JPanel {
                           }
                           private void updateEmployeeName() {
                               String name = nameField.getText();
-                              employee.setNameNoEvent(name);
+                              activeEmployee.setNameNoEvent(name);
                           }
                       });
-                      employee.addPropertyChangeListener("name", new PropertyChangeListener() {
+                      activeEmployee.addPropertyChangeListener("name", new PropertyChangeListener() {
                           @Override
                           public void propertyChange(PropertyChangeEvent evt) {
-                                nameField.setText(employee.getName());
+                                nameField.setText(activeEmployee.getName());
                           }
                       });
 
@@ -118,20 +120,20 @@ public class FormulairePanel extends JPanel {
 
                     radioMale.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            employee.setIsFemaleNoEvent(false);
+                            activeEmployee.setIsFemaleNoEvent(false);
                         }
                     });
 
                     radioFemale.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            employee.setIsFemaleNoEvent(true);
+                            activeEmployee.setIsFemaleNoEvent(true);
                         }
                     });
 
-                    employee.addPropertyChangeListener("isFemale", new PropertyChangeListener() {
+                    activeEmployee.addPropertyChangeListener("isFemale", new PropertyChangeListener() {
                         @Override
                         public void propertyChange(PropertyChangeEvent evt) {
-                            if (employee.isFemale()) {
+                            if (activeEmployee.isFemale()) {
                                 radioFemale.setSelected(true);
                             } else {
                                 radioMale.setSelected(true);
@@ -166,13 +168,13 @@ public class FormulairePanel extends JPanel {
                             updateEmployeeAge();
                         }
                         private void updateEmployeeAge() {
-                            employee.setAgeNoEvent(ageField.getText());                        }
+                            activeEmployee.setAgeNoEvent(ageField.getText());                        }
                     });
-                    employee.addPropertyChangeListener("age", new PropertyChangeListener() {
+                    activeEmployee.addPropertyChangeListener("age", new PropertyChangeListener() {
                         @Override
                         public void propertyChange(PropertyChangeEvent evt) {
-                            if (employee.getAge() != null) {
-                                ageField.setText(employee.getAge().toString());
+                            if (activeEmployee.getAge() != null) {
+                                ageField.setText(activeEmployee.getAge().toString());
                             } else {
                            //     SwingUtilities.invokeLater(() -> {
                                 ageField.setText("");
@@ -207,14 +209,14 @@ public class FormulairePanel extends JPanel {
                     }
 
                     private void updateBloodType() {
-                        employee.setBloodtypeNoEvent(bloodField.getText());
+                        activeEmployee.setBloodtypeNoEvent(bloodField.getText());
                     }
                 });
 
-                employee.addPropertyChangeListener("bloodType", new PropertyChangeListener() {
+                activeEmployee.addPropertyChangeListener("bloodType", new PropertyChangeListener() {
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        bloodField.setText(employee.getBloodtype());
+                        bloodField.setText(activeEmployee.getBloodtype());
                     }
                 });
 
@@ -244,14 +246,14 @@ public class FormulairePanel extends JPanel {
                         updateEmployeeNumber();
                     }
                     private void updateEmployeeNumber() {
-                        employee.setPhoneNoEvent(numberField.getText());
+                        activeEmployee.setPhoneNoEvent(numberField.getText());
                     }
                 });
 
-                employee.addPropertyChangeListener("phoneNumber", new PropertyChangeListener() {
+                activeEmployee.addPropertyChangeListener("phoneNumber", new PropertyChangeListener() {
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        numberField.setText(employee.getPhoneNumber());
+                        numberField.setText(activeEmployee.getPhoneNumber());
                     }
                 });
                 numberPanel.add(numberField);
@@ -271,20 +273,17 @@ public class FormulairePanel extends JPanel {
 
                     comboBox.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            employee.setQualificationNoEvent(Qualification.values()[comboBox.getSelectedIndex()]);
-
+                            activeEmployee.setQualificationNoEvent(Qualification.values()[comboBox.getSelectedIndex()]);
                         }
                     });
 
-
-                employee.addPropertyChangeListener("qualification", new PropertyChangeListener() {
+               activeEmployee.addPropertyChangeListener("qualification", new PropertyChangeListener() {
 
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        if (employee.getQualification() != null) {
-                            comboBox.setSelectedItem(employee.getQualification().toString());
+                        if (activeEmployee.getQualification() != null) {
+                            comboBox.setSelectedItem(activeEmployee.getQualification().toString());
                         }
-
                     }
                 });
 
@@ -303,13 +302,13 @@ public class FormulairePanel extends JPanel {
 
                  dateChooser.setDateFormatString("yyyy-MM-dd");
 
-                 dateChooser.addPropertyChangeListener(new DateListener(employee));
+                 dateChooser.addPropertyChangeListener(new DateListener(activeEmployee));
 
-                 employee.addPropertyChangeListener("startDate", new PropertyChangeListener() {
+                 activeEmployee.addPropertyChangeListener("startDate", new PropertyChangeListener() {
                      @Override
                      public void propertyChange(PropertyChangeEvent evt) {
-                         if (employee.getStartDate() != null) {
-                             dateChooser.setDate(Date.valueOf(employee.getStartDate()));
+                         if (activeEmployee.getStartDate() != null) {
+                             dateChooser.setDate(Date.valueOf(activeEmployee.getStartDate()));
                          } else {
                              dateChooser.setDate(null);
                          }
@@ -326,18 +325,17 @@ public class FormulairePanel extends JPanel {
 
         // EAST
 
-        JPanel estPanel = new JPanel(null);
-        estPanel.setLayout(new FlowLayout());
-        estPanel.setSize(150,300);
-        JPanel photoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        photoPanel.setPreferredSize(new Dimension(150, 200));
-        photoPanel.setBackground(Color.blue);
-        // photoPanel.setBorder(border);
         JLabel photoLabel = new JLabel();
-        photoPanel.add(photoLabel);
-        estPanel.add(photoPanel);
+        photoLabel.setHorizontalAlignment(JLabel.CENTER);
+        photoLabel.setVerticalAlignment(JLabel.CENTER);
+        photoLabel.setIcon(PhotoUtil.getDefault());
 
-        add(estPanel, BorderLayout.EAST);
+        Border padding = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        Border photoBorder = BorderFactory.createCompoundBorder(padding, border);
+
+        photoLabel.setBorder(photoBorder);
+
+        add(photoLabel, BorderLayout.EAST);
 
         // CENTER
         JPanel centerPanel = new JPanel();
@@ -368,14 +366,14 @@ public class FormulairePanel extends JPanel {
                      }
                      private void updateAddress() {
                          String address = addressTextArea.getText();
-                         employee.setAddressNoEvent(address);
+                         activeEmployee.setAddressNoEvent(address);
                      }
                  });
-                 employee.addPropertyChangeListener("address", new PropertyChangeListener() {
+                activeEmployee.addPropertyChangeListener("address", new PropertyChangeListener() {
 
                      @Override
                      public void propertyChange(PropertyChangeEvent evt) {
-                         addressTextArea.setText(employee.getAddress());
+                         addressTextArea.setText(activeEmployee.getAddress());
                      }
                  });
 
@@ -387,10 +385,9 @@ public class FormulairePanel extends JPanel {
 
             // Bouton de chargement d'image
            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JButton photoButton = new JButton("Upload photo");
+                JButton photoButton = new JButton("Upload photo",PhotoUtil.getIcone("src/main/resources/icone/telecharger.png",18));
                 photoButton.setPreferredSize(new Dimension(340, 22));
                 buttonPanel.add(photoButton);
-               // buttonPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
            centerPanel.add(buttonPanel);
 
@@ -399,18 +396,17 @@ public class FormulairePanel extends JPanel {
                   pathLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                   pathPanel.add(pathLabel);
                   JTextField pathField = new JTextField(29);
-                  //pathField.setPreferredSize(new Dimension(320, 20));
                   pathField.setFont(new Font("Tahoma", Font.PLAIN, 12));
                   pathField.setEditable(false);
 
-                employee.addPropertyChangeListener("photoPath", new PropertyChangeListener() {
+                 activeEmployee.addPropertyChangeListener("photoPath", new PropertyChangeListener() {
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        pathField.setText(employee.getPhotoPath());
+                        pathField.setText(activeEmployee.getPhotoPath());
 
-                        if (employee.getPhotoPath() != null) {
+                        if (activeEmployee.getPhotoPath() != null) {
 
-                            File photoEmployee = new File(employee.getPhotoPath());
+                            File photoEmployee = new File(activeEmployee.getPhotoPath());
 
                             ImageIcon imageIcon = new ImageIcon(photoEmployee.getAbsolutePath());
 
@@ -419,20 +415,15 @@ public class FormulairePanel extends JPanel {
 
                             photoLabel.setIcon(photoIcon);
                         } else {
-                            photoLabel.setIcon(null);
+                            photoLabel.setIcon(PhotoUtil.getDefault());
                         }
-
-
                     }
                 });
 
                   pathPanel.add(pathField);
-                 /// pathPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             centerPanel.add(pathPanel);
 
     add(centerPanel, BorderLayout.CENTER);
-
-
 
         photoButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -445,21 +436,10 @@ public class FormulairePanel extends JPanel {
 
                     String path = selectedFile.getAbsolutePath();
 
-                    employee.setPhotoPath(path);
-
+                    activeEmployee.setPhotoPath(path);
                 }
-
-
-
             }
         });
-
-
-
-
-
     }
-
-
 
 }

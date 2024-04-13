@@ -1,8 +1,10 @@
 package org.example.util;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 
-public class SavePhoto {
+public class PhotoUtil {
 
     public static String path(String filePath, int employeeId) throws IOException {
 
@@ -25,8 +27,6 @@ public class SavePhoto {
         }
 
         File newFile = new File(employeePhotoDirectory.getAbsolutePath() + File.separator + "id_" + employeeId + "_" + selectedFile.getName());
-
-
                try (
                    FileInputStream fis = new FileInputStream(selectedFile);
                    FileOutputStream fos = new FileOutputStream(newFile);
@@ -41,7 +41,33 @@ public class SavePhoto {
                 catch (IOException ex) {
                     throw new IOException(ex);
                }
+    }
 
+    public static ImageIcon getDefault() {
+
+        File defaultImage = new File("src/main/resources/icone/portraitIco.png");
+
+        if (defaultImage.exists()) {
+
+            ImageIcon imagebase = new ImageIcon(defaultImage.getAbsolutePath());
+            Image scaleImage = imagebase.getImage().getScaledInstance(160,-1, Image.SCALE_SMOOTH);
+
+            return new ImageIcon(scaleImage);
+        }
+         return null;
+
+    }
+
+    public static ImageIcon getIcone(String path, int size) {
+
+        File iconFile = new File(path);
+
+        if (iconFile.exists()) {
+            ImageIcon imagebase = new ImageIcon(iconFile.getAbsolutePath());
+            Image image = imagebase.getImage().getScaledInstance(size, -1, Image.SCALE_SMOOTH);
+            return new ImageIcon(image);
+        }
+        return null;
     }
 
 }

@@ -3,44 +3,28 @@ package org.example.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 
 public class Employee  {
 
-  //  private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-  //  private List<PropertyChangeListener> listeners = new ArrayList<>();
 
     private HashMap<String,PropertyChangeListener> listeners = new HashMap<>();
-
     private Integer id;
-
     private String name;
-
     private Integer age;
-
     private boolean isFemale;
-
     private String address;
-
     private Qualification qualification;
-
     private String bloodtype;
-
     private String phoneNumber;
-
     private LocalDate startDate;
-
     private String photoPath;
 
     public String[] getRow() {
         return new String[]{Integer.toString(id),name,isFemale ? "Female" : "Male",Integer.toString(age),bloodtype,phoneNumber, qualification.name(),address,startDate.toString(),photoPath};
     }
-
 
     public void reset() {
 
@@ -55,13 +39,11 @@ public class Employee  {
         setStartDate(null);
         setPhotoPath(null);
         setBloodtype(null);
-
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         listeners.put(propertyName, listener);
     }
-
 
     public void setId(Integer id) {
         Integer oldId = this.id;
@@ -71,7 +53,6 @@ public class Employee  {
             listeners.get("id").propertyChange(event);
         }
     }
-
 
     public void setName(String name) {
         String oldName = this.name;
@@ -112,7 +93,6 @@ public class Employee  {
 
     }
 
-
     public void setQualification(Qualification qualification) {
          Qualification oldQualification = this.qualification;
          this.qualification = qualification;
@@ -122,7 +102,6 @@ public class Employee  {
          }
 
     }
-
 
     public void setBloodtype(String bloodtype) {
          String oldBloodtype = this.bloodtype;
@@ -151,7 +130,6 @@ public class Employee  {
          }
     }
 
-
     public void setPhotoPath(String photoPath) {
          String oldPhotoPath = this.photoPath;
          this.photoPath = photoPath;
@@ -164,18 +142,18 @@ public class Employee  {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", isFemale=" + isFemale +
-                ", address='" + address + '\'' +
-                ", qualification=" + qualification +
-                ", bloodtype='" + bloodtype + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", startDate=" + startDate +
-                ", photoPath='" + photoPath + '\'' +
-                '}';
+        return "\nEmployee's informations " +
+                "\n\t id : " + id +
+                ",\n\t name : " + name +
+                ",\n\t age : " + age +
+                ",\n\t gender : " + (isFemale ? "Female" : "Male") +
+                ",\n\t address : \n" + address +
+                ",\n\t qualification : " + qualification +
+                ",\n\t blood type : " + bloodtype +
+                ",\n\t phone number : " + phoneNumber +
+                ",\n\t start date : " + startDate +
+                ",\n\t profil photo path : " + photoPath +
+                ".\n";
     }
 
     public Integer getId() {
@@ -233,9 +211,7 @@ public class Employee  {
             int newAge = Integer.parseInt(age);
             this.age = newAge;
         } catch (NumberFormatException e) {
-          //  setAge(null);
         }
-
     }
 
     public void setIsFemaleNoEvent(Boolean isFemale) {
@@ -300,8 +276,4 @@ public class Employee  {
 
     }
 
-
-    //    public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-//        propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
-//    }
 }

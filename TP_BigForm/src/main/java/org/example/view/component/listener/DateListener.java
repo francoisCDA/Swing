@@ -19,10 +19,6 @@ public class DateListener implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("date")) {
             Date date = (Date) evt.getNewValue();
-            //System.out.println(date);
-//            System.out.println(date.getYear() + 1900 );
-//            System.out.println(String.format("%02d", date.getMonth() + 1));
-//            System.out.println(String.format("%02d",date.getDate()));
             if (date != null) {
                 LocalDate localDate =  LocalDate.of(date.getYear() +1900, date.getMonth()+1, date.getDate());
                 employee.setStartDateNoEvent(localDate);

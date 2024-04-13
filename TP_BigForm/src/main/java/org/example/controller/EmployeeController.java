@@ -22,7 +22,6 @@ public class EmployeeController {
         }
 
         return employeeRows;
-
     }
 
     public int save(Employee employee) throws SQLException {
@@ -40,7 +39,6 @@ public class EmployeeController {
         }
 
         return employeeDAO.addEmployee(employee);
-
     }
 
     public boolean update(Employee employee) throws SQLException {
@@ -62,8 +60,7 @@ public class EmployeeController {
         } else {
             throw new SQLException("Error updating employee");
         }
-
-    }
+   }
 
 
     public Employee getEmployeeById(int id) {
@@ -105,6 +102,5 @@ public class EmployeeController {
             employeeRows[i] = employees.get(i).getRow();
         }
         return employeeRows;
-
     }
 }
