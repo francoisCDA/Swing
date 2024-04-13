@@ -1,19 +1,25 @@
 package org.example.view.component;
 
+import com.sun.source.tree.TryTree;
 import com.toedter.calendar.JDateChooser;
 import org.example.model.Employee;
 import org.example.model.Qualification;
+import org.example.view.component.listener.DateListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
+import java.io.*;
+import java.sql.Date;
 
 public class FormulairePanel extends JPanel {
 
@@ -24,8 +30,10 @@ public class FormulairePanel extends JPanel {
     public FormulairePanel(Employee employee, Border border) {
         this.employee = employee;
         setBorder(border);
+        setPreferredSize(new Dimension(810, 280));
 
         setLayout(new BorderLayout());
+
 
         // WEST
 
@@ -40,27 +48,17 @@ public class FormulairePanel extends JPanel {
                         JTextField idField = new JTextField(10);
                             idField.setEditable(false);
                             idField.setFont(new Font("Tahoma", Font.PLAIN, 12));
-//                            idField.getDocument().addDocumentListener(new DocumentListener() {
-//
-//                                @Override
-//                                public void insertUpdate(DocumentEvent e) {
-//                                    updTextField();
-//                                }
-//
-//                                @Override
-//                                public void removeUpdate(DocumentEvent e) {
-//                                    updTextField();
-//                                }
-//
-//                                @Override
-//                                public void changedUpdate(DocumentEvent e) {
-//                                    updTextField();
-//                                }
-//
-//                                private void updTextField() {
-//                                    idField.setText(employee.getId().toString());
-//                                }
-//                            });
+
+                        employee.addPropertyChangeListener("id", new PropertyChangeListener() {
+                            @Override
+                            public void propertyChange(PropertyChangeEvent evt) {
+                                if (employee.getId() != null) {
+                                    idField.setText(employee.getId().toString());
+                                } else {
+                                    idField.setText("");
+                                }
+                            }
+                        });
 
                     idPanel.add(idField);
             idPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -111,18 +109,37 @@ public class FormulairePanel extends JPanel {
                     ButtonGroup buttonGroup = new ButtonGroup();
                     JRadioButton radioMale = new JRadioButton("Male");
                     JRadioButton radioFemale = new JRadioButton("Female");
-                        if (employee != null) {
+
+                    buttonGroup.add(radioMale);
+                    buttonGroup.add(radioFemale);
+                    genderPanel.add(genderLabel);
+                    genderPanel.add(radioMale);
+                    genderPanel.add(radioFemale);
+
+                    radioMale.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            employee.setIsFemaleNoEvent(false);
+                        }
+                    });
+
+                    radioFemale.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            employee.setIsFemaleNoEvent(true);
+                        }
+                    });
+
+                    employee.addPropertyChangeListener("isFemale", new PropertyChangeListener() {
+                        @Override
+                        public void propertyChange(PropertyChangeEvent evt) {
                             if (employee.isFemale()) {
                                 radioFemale.setSelected(true);
                             } else {
                                 radioMale.setSelected(true);
                             }
                         }
-                    buttonGroup.add(radioMale);
-                    buttonGroup.add(radioFemale);
-                    genderPanel.add(genderLabel);
-                    genderPanel.add(radioMale);
-                    genderPanel.add(radioFemale);
+                    });
+
+
             genderPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             westPanel.add(genderPanel);
 
@@ -131,30 +148,36 @@ public class FormulairePanel extends JPanel {
                 ageLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                 agePanel.add(ageLabel);
                 JTextField ageField = new JTextField(10);
+                    //ageField.setInputVerifier(intVerifier);
                     ageField.getDocument().addDocumentListener(new DocumentListener() {
 
                         @Override
                         public void insertUpdate(DocumentEvent e) {
-                            updateEmployeeName();
+                            updateEmployeeAge();
                         }
 
                         @Override
                         public void removeUpdate(DocumentEvent e) {
-                            updateEmployeeName();
+                            updateEmployeeAge();
                         }
 
                         @Override
                         public void changedUpdate(DocumentEvent e) {
-                            updateEmployeeName();
+                            updateEmployeeAge();
                         }
-                        private void updateEmployeeName() {
-                            Integer age = Integer.parseInt(ageField.getText());
-                            employee.setAge(age);                        }
+                        private void updateEmployeeAge() {
+                            employee.setAgeNoEvent(ageField.getText());                        }
                     });
                     employee.addPropertyChangeListener("age", new PropertyChangeListener() {
                         @Override
                         public void propertyChange(PropertyChangeEvent evt) {
-                            ageField.setText(employee.getAge().toString());
+                            if (employee.getAge() != null) {
+                                ageField.setText(employee.getAge().toString());
+                            } else {
+                           //     SwingUtilities.invokeLater(() -> {
+                                ageField.setText("");
+                           //     });
+                            }
                         }
                     });
                 agePanel.add(ageField);
@@ -166,6 +189,36 @@ public class FormulairePanel extends JPanel {
                 bloodLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                 bloodPanel.add(bloodLabel);
                 JTextField bloodField = new JTextField(10);
+
+                bloodField.getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        updateBloodType();
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        updateBloodType();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        updateBloodType();
+                    }
+
+                    private void updateBloodType() {
+                        employee.setBloodtypeNoEvent(bloodField.getText());
+                    }
+                });
+
+                employee.addPropertyChangeListener("bloodType", new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        bloodField.setText(employee.getBloodtype());
+                    }
+                });
+
+
                 bloodPanel.add(bloodField);
             bloodPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             westPanel.add(bloodPanel);
@@ -175,6 +228,32 @@ public class FormulairePanel extends JPanel {
                 numberLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                 numberPanel.add(numberLabel);
                 JTextField numberField = new JTextField(10);
+                numberField.getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        updateEmployeeNumber();
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        updateEmployeeNumber();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        updateEmployeeNumber();
+                    }
+                    private void updateEmployeeNumber() {
+                        employee.setPhoneNoEvent(numberField.getText());
+                    }
+                });
+
+                employee.addPropertyChangeListener("phoneNumber", new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        numberField.setText(employee.getPhoneNumber());
+                    }
+                });
                 numberPanel.add(numberField);
             numberPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             westPanel.add(numberPanel);
@@ -184,11 +263,32 @@ public class FormulairePanel extends JPanel {
                 JLabel qualifLabel = new JLabel("Qualification");
                 qualifLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                 qualifPanel.add(qualifLabel);
-                    String[] qualif = new String[Qualification.values().length];
+                    String[] qualifs = new String[Qualification.values().length];
                     for (int i = 0; i < Qualification.values().length; i++) {
-                        qualif[i] = Qualification.values()[i].toString();
+                        qualifs[i] = Qualification.values()[i].toString();
                     }
-                JComboBox<String> comboBox = new JComboBox<>(qualif);
+                JComboBox<String> comboBox = new JComboBox<>(qualifs);
+
+                    comboBox.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            employee.setQualificationNoEvent(Qualification.values()[comboBox.getSelectedIndex()]);
+
+                        }
+                    });
+
+
+                employee.addPropertyChangeListener("qualification", new PropertyChangeListener() {
+
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        if (employee.getQualification() != null) {
+                            comboBox.setSelectedItem(employee.getQualification().toString());
+                        }
+
+                    }
+                });
+
+
                 qualifPanel.add(comboBox);
             qualifPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             westPanel.add(qualifPanel);
@@ -200,82 +300,161 @@ public class FormulairePanel extends JPanel {
                  datePanel.add(dateLabel);
                  JDateChooser dateChooser = new JDateChooser();
                  dateChooser.setPreferredSize(new Dimension(100, 20));
+
+                 dateChooser.setDateFormatString("yyyy-MM-dd");
+
+                 dateChooser.addPropertyChangeListener(new DateListener(employee));
+
+                 employee.addPropertyChangeListener("startDate", new PropertyChangeListener() {
+                     @Override
+                     public void propertyChange(PropertyChangeEvent evt) {
+                         if (employee.getStartDate() != null) {
+                             dateChooser.setDate(Date.valueOf(employee.getStartDate()));
+                         } else {
+                             dateChooser.setDate(null);
+                         }
+
+                     }
+                 });
+
+
                  datePanel.add(dateChooser);
             datePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             westPanel.add(datePanel);
 
         add(westPanel, BorderLayout.WEST);
 
+        // EAST
+
+        JPanel estPanel = new JPanel(null);
+        estPanel.setLayout(new FlowLayout());
+        estPanel.setSize(150,300);
+        JPanel photoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        photoPanel.setPreferredSize(new Dimension(150, 200));
+        photoPanel.setBackground(Color.blue);
+        // photoPanel.setBorder(border);
+        JLabel photoLabel = new JLabel();
+        photoPanel.add(photoLabel);
+        estPanel.add(photoPanel);
+
+        add(estPanel, BorderLayout.EAST);
 
         // CENTER
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
             //address
-            JPanel addressPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            JPanel addressPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
                  JLabel addressLabel = new JLabel("Address");
                  addressLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                  addressPanel.add(addressLabel);
-                 JTextArea textArea = new JTextArea(10, 25);
-                 JScrollPane scrollPane = new JScrollPane(textArea);
+                 JTextArea addressTextArea = new JTextArea(10, 26);
+                // addressTextArea.setPreferredSize(new Dimension(200, 300));
+                 addressTextArea.getDocument().addDocumentListener(new DocumentListener() {
+
+                     @Override
+                     public void insertUpdate(DocumentEvent e) {
+                        updateAddress();
+                     }
+
+                     @Override
+                     public void removeUpdate(DocumentEvent e) {
+                         updateAddress();
+                     }
+
+                     @Override
+                     public void changedUpdate(DocumentEvent e) {
+                         updateAddress();
+                     }
+                     private void updateAddress() {
+                         String address = addressTextArea.getText();
+                         employee.setAddressNoEvent(address);
+                     }
+                 });
+                 employee.addPropertyChangeListener("address", new PropertyChangeListener() {
+
+                     @Override
+                     public void propertyChange(PropertyChangeEvent evt) {
+                         addressTextArea.setText(employee.getAddress());
+                     }
+                 });
+
+                 JScrollPane scrollPane = new JScrollPane(addressTextArea);
                  addressPanel.add(scrollPane);
-            addressPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+          //  addressPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             centerPanel.add(addressPanel);
 
 
             // Bouton de chargement d'image
-            JButton photoButton = new JButton("Upload image");
-            photoButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
-            centerPanel.add(photoButton);
+           JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                JButton photoButton = new JButton("Upload photo");
+                photoButton.setPreferredSize(new Dimension(340, 22));
+                buttonPanel.add(photoButton);
+               // buttonPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-            JPanel pathPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+           centerPanel.add(buttonPanel);
+
+            JPanel pathPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
                   JLabel pathLabel = new JLabel("Path image");
                   pathLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
                   pathPanel.add(pathLabel);
-                  JTextField pathField = new JTextField(15);
+                  JTextField pathField = new JTextField(29);
+                  //pathField.setPreferredSize(new Dimension(320, 20));
+                  pathField.setFont(new Font("Tahoma", Font.PLAIN, 12));
+                  pathField.setEditable(false);
+
+                employee.addPropertyChangeListener("photoPath", new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        pathField.setText(employee.getPhotoPath());
+
+                        if (employee.getPhotoPath() != null) {
+
+                            File photoEmployee = new File(employee.getPhotoPath());
+
+                            ImageIcon imageIcon = new ImageIcon(photoEmployee.getAbsolutePath());
+
+                            Image scalePhoto = imageIcon.getImage().getScaledInstance(160, -1, Image.SCALE_SMOOTH);
+                            ImageIcon photoIcon = new ImageIcon(scalePhoto);
+
+                            photoLabel.setIcon(photoIcon);
+                        } else {
+                            photoLabel.setIcon(null);
+                        }
+
+
+                    }
+                });
+
                   pathPanel.add(pathField);
-                  pathPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+                 /// pathPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             centerPanel.add(pathPanel);
 
     add(centerPanel, BorderLayout.CENTER);
 
 
-        JPanel estPanel = new JPanel(null);
-        estPanel.setLayout(new FlowLayout());
-        estPanel.setSize(150,300);
-                JPanel photoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                photoPanel.setPreferredSize(new Dimension(150, 200));
-                photoPanel.setBackground(Color.blue);
-                photoPanel.setBorder(border);
-                JLabel photoLabel = new JLabel("photo");
-                photoPanel.add(photoLabel);
-        estPanel.add(photoPanel);
-
-    add(estPanel, BorderLayout.EAST);
 
         photoButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-                // Obtenez le fichier sélectionné
+
                 File selectedFile = fileChooser.getSelectedFile();
-                // Afficher l'image sélectionnée
-                ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
-                photoLabel.setIcon(imageIcon);
+
+                if (selectedFile.exists() && selectedFile.isFile()) {
+
+                    String path = selectedFile.getAbsolutePath();
+
+                    employee.setPhotoPath(path);
+
+                }
+
+
+
             }
         });
 
-//        employee.addPropertyChangeListener(new PropertyChangeListener() {
-//
-//            @Override
-//            public void propertyChange(PropertyChangeEvent evt) {
-//                System.out.printf(evt.getPropertyName());
-//                  if (evt.getPropertyName().equals("id")) {
-//
-//                      idField.setText((String) evt.getNewValue());
-//                  }
-//            }
-//        } );
+
 
 
 

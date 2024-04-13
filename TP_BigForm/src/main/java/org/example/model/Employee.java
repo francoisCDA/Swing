@@ -1,6 +1,5 @@
 package org.example.model;
 
-import lombok.Data;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,7 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 
 public class Employee  {
 
@@ -46,16 +44,17 @@ public class Employee  {
 
     public void reset() {
 
-        id = null;
-        name = null;
-        age = null;
-        isFemale = false;
-        address = null;
-        qualification = null;
-        bloodtype = null;
-        phoneNumber = null;
-        startDate = null;
-        photoPath = null;
+        setId(null);
+        setName(null);
+        setAge(null);
+        setFemale(false);
+        setAddress(null);
+        setQualification(Qualification.BEPC);
+        setPhoneNumber(null);
+        setPhotoPath(null);
+        setStartDate(null);
+        setPhotoPath(null);
+        setBloodtype(null);
 
     }
 
@@ -63,93 +62,104 @@ public class Employee  {
         listeners.put(propertyName, listener);
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        if (listeners.containsKey("id")) {
+            PropertyChangeEvent event = new PropertyChangeEvent(this, "id", oldId, id);
+            listeners.get("id").propertyChange(event);
+        }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setNameNoEvent(String name) {
-        this.name = name;
-    }
 
     public void setName(String name) {
         String oldName = this.name;
         this.name = name;
 
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "name", oldName, name);
-        listeners.get("name").propertyChange(event);
+        if(listeners.containsKey("name")) {
+            PropertyChangeEvent event = new PropertyChangeEvent(this, "name", oldName, name);
+            listeners.get("name").propertyChange(event);
+        }
 
-    }
-
-    public Integer getAge() {
-        return age;
     }
 
     public void setAge(Integer age) {
+        Integer oldAge = this.age;
         this.age = age;
-    }
-
-    public boolean isFemale() {
-        return isFemale;
+        if ( listeners.containsKey("age")){
+            PropertyChangeEvent event = new PropertyChangeEvent(this, "age", oldAge, age);
+            listeners.get("age").propertyChange(event);
+        }
     }
 
     public void setFemale(boolean female) {
-        isFemale = female;
-    }
-
-    public String getAddress() {
-        return address;
+        boolean oldFemale = this.isFemale;
+        this.isFemale = female;
+        if (listeners.containsKey("isFemale")){
+            PropertyChangeEvent event = new PropertyChangeEvent(this, "isFemale", oldFemale, female);
+            listeners.get("isFemale").propertyChange(event);
+        }
     }
 
     public void setAddress(String address) {
+        String oldAddress = this.address;
         this.address = address;
+        if (listeners.containsKey("address")){
+            PropertyChangeEvent event = new PropertyChangeEvent(this, "address", oldAddress, address);
+            listeners.get("address").propertyChange(event);
+        }
+
     }
 
-    public Qualification getQualification() {
-        return qualification;
-    }
 
     public void setQualification(Qualification qualification) {
-        this.qualification = qualification;
+         Qualification oldQualification = this.qualification;
+         this.qualification = qualification;
+         if (listeners.containsKey("qualification")){
+             PropertyChangeEvent event = new PropertyChangeEvent(this, "qualification", oldQualification, qualification);
+             listeners.get("qualification").propertyChange(event);
+         }
+
     }
 
-    public String getBloodtype() {
-        return bloodtype;
-    }
 
     public void setBloodtype(String bloodtype) {
-        this.bloodtype = bloodtype;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
+         String oldBloodtype = this.bloodtype;
+         this.bloodtype = bloodtype;
+         if (listeners.containsKey("bloodType")){
+             PropertyChangeEvent event = new PropertyChangeEvent(this, "bloodType", oldBloodtype, bloodtype);
+             listeners.get("bloodType").propertyChange(event);
+         }
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        String oldPhoneNumber = this.phoneNumber;
         this.phoneNumber = phoneNumber;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
+        if (listeners.containsKey("phoneNumber")){
+            PropertyChangeEvent event = new PropertyChangeEvent(this, "phoneNumber", oldPhoneNumber, phoneNumber);
+            listeners.get("phoneNumber").propertyChange(event);
+        }
     }
 
     public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+         LocalDate oldStartDate = this.startDate;
+         this.startDate = startDate;
+         if (listeners.containsKey("startDate")){
+             PropertyChangeEvent event = new PropertyChangeEvent(this, "startDate", oldStartDate, startDate);
+             listeners.get("startDate").propertyChange(event);
+         }
     }
 
-    public String getPhotoPath() {
-        return photoPath;
-    }
 
     public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+         String oldPhotoPath = this.photoPath;
+         this.photoPath = photoPath;
+         if (listeners.containsKey("photoPath")){
+             PropertyChangeEvent event = new PropertyChangeEvent(this, "photoPath", oldPhotoPath, photoPath);
+             listeners.get("photoPath").propertyChange(event);
+         }
+
     }
 
     @Override
@@ -167,6 +177,129 @@ public class Employee  {
                 ", photoPath='" + photoPath + '\'' +
                 '}';
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public boolean isFemale() {
+        return isFemale;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Qualification getQualification() {
+        return qualification;
+    }
+
+    public String getBloodtype() {
+        return bloodtype;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    // NO EVENT SETTERS
+
+    public void setIdNoEvent(Integer id) {
+        this.id = id;
+    }
+
+    public void setNameNoEvent(String name) {
+        this.name = name;
+    }
+
+    public void setAgeNoEvent(String age) {
+        try {
+            int newAge = Integer.parseInt(age);
+            this.age = newAge;
+        } catch (NumberFormatException e) {
+          //  setAge(null);
+        }
+
+    }
+
+    public void setIsFemaleNoEvent(Boolean isFemale) {
+        this.isFemale = isFemale;
+    }
+
+    public void setAddressNoEvent(String address) {
+        this.address = address;
+    }
+
+    public void setQualificationNoEvent(Qualification qualification) {
+        setQualification(qualification);
+    }
+
+    public void setPhoneNoEvent(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setBloodtypeNoEvent(String bloodType) {
+        this.bloodtype = bloodType;
+    }
+
+    public void setStartDateNoEvent(LocalDate localDate) {
+        this.startDate = localDate;
+    }
+
+    private void setPhotoPathNoEvent(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
+
+    public Employee mkClone() {
+        Employee clone = new Employee();
+
+        clone.setIdNoEvent(id);
+        clone.setNameNoEvent(name);
+        clone.setAgeNoEvent(age.toString());
+        clone.setIsFemaleNoEvent(isFemale);
+        clone.setAddressNoEvent(address);
+        clone.setQualificationNoEvent(qualification);
+        clone.setBloodtypeNoEvent(bloodtype);
+        clone.setPhoneNoEvent(phoneNumber);
+        clone.setStartDateNoEvent(startDate);
+        clone.setPhotoPathNoEvent(photoPath);
+
+        return clone;
+    }
+
+    public void setEmployee(Employee employeeSelected) {
+
+        setId(employeeSelected.getId());
+        setName(employeeSelected.getName());
+        setAge(employeeSelected.getAge());
+        setFemale(employeeSelected.isFemale());
+        setAddress(employeeSelected.getAddress());
+        setQualification(employeeSelected.getQualification());
+        setPhoneNumber(employeeSelected.getPhoneNumber());
+        setPhotoPath(employeeSelected.getPhotoPath());
+        setStartDate(employeeSelected.getStartDate());
+        setPhotoPath(employeeSelected.getPhotoPath());
+        setBloodtype(employeeSelected.getBloodtype());
+
+    }
+
 
     //    public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 //        propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);

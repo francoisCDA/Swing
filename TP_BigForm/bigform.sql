@@ -11,8 +11,11 @@ create table employee (
     is_female boolean,
     address varchar(250),
     qualification varchar(5),
-    bloodtype varchar(4),
-    phone varchar(10),
+    bloodtype varchar(5),
+    phone varchar(13),
     start_date varchar(10),
     photoPath varchar(250)
 );
+
+
+select * from employee;

@@ -4,11 +4,9 @@ import org.example.model.Employee;
 import org.example.model.Qualification;
 import org.example.util.ConnectDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +18,27 @@ public class EmployeeDAO {
 
     private ResultSet rs;
 
-    public int addEmployee(Employee emp) {
+    public int addEmployee(Employee emp) throws SQLException {
         con = ConnectDB.getConnection();
+        int ret = 0;
 
         try {
-            ps = con.prepareStatement("INSERT INTO employee ( name , age, is_female, address, qualification, bloodtype, phone, start_date, photoPath) VALUES (?,?,?,?,?,?,?,?,?) ");
+            ps = con.prepareStatement("INSERT INTO employee ( name , age, is_female, address, qualification, bloodtype, phone, start_date, photoPath) VALUES (?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
             prepareEmployee(emp);
 
-            return ps.executeUpdate();
+            ps.executeUpdate();
+
+            rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLException(e);
         }
+
+        return ret;
     }
 
 
@@ -77,23 +84,23 @@ public class EmployeeDAO {
         return emp;
     }
 
-    public int updateEmployee(Employee emp) {
+    public int updateEmployee(Employee emp) throws SQLException {
         con = ConnectDB.getConnection();
 
-        try {
+//        try {
             ps = con.prepareStatement("UPDATE employee SET name = ? , age = ? , is_female = ? , address = ? , qualification = ? , bloodtype = ?, phone = ?, start_date = ?, photoPath = ?  WHERE id = ? ");
             prepareEmployee(emp);
             ps.setInt(10, emp.getId());
 
             return ps.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
 
-    public int deleteEmployee(int id) {
+    public int deleteEmployee(int id) throws SQLException {
         con = ConnectDB.getConnection();
 
         try {
@@ -102,11 +109,12 @@ public class EmployeeDAO {
 
             return ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLException(e);
         }
     }
 
     private void prepareEmployee(Employee emp) throws SQLException {
+
         ps.setString(1, emp.getName());
         ps.setInt(2, emp.getAge());
         ps.setBoolean(3, emp.isFemale());
@@ -132,4 +140,51 @@ public class EmployeeDAO {
         emp.setPhotoPath(rs.getString("photoPath"));
     }
 
+    public int updatePathEmployee(int employeeId, String path) throws SQLException {
+
+        con = ConnectDB.getConnection();
+
+        ps = con.prepareStatement("UPDATE employee SET photoPath = ?  WHERE id = ? ");
+        ps.setString(1,path);
+        ps.setInt(2, employeeId);
+
+        return ps.executeUpdate();
+
+    }
+
+    public List<Employee> getEmployeesIdLike(int employeeId) throws SQLException {
+        con = ConnectDB.getConnection();
+        List<Employee> ret = new ArrayList<>();
+
+        ps = con.prepareStatement("SELECT id, name , age, is_female, address, qualification, bloodtype, phone, start_date, photoPath FROM employee WHERE id LIKE ? ");
+        ps.setInt(1, employeeId);
+
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Employee emp = new Employee();
+            createEmploye(emp);
+            ret.add(emp);
+        }
+        return ret;
+
+    }
+
+    public List<Employee> getEmployeesNameLike(String searchData) throws SQLException {
+        con = ConnectDB.getConnection();
+        List<Employee> ret = new ArrayList<>();
+
+        ps = con.prepareStatement("SELECT id, name , age, is_female, address, qualification, bloodtype, phone, start_date, photoPath FROM employee WHERE name LIKE ? ");
+        ps.setString(1, "%"+searchData+"%");
+
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Employee emp = new Employee();
+            createEmploye(emp);
+            ret.add(emp);
+        }
+        return ret;
+
+    }
 }
