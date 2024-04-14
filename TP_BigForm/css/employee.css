@@ -21,7 +21,24 @@ h1 {
 }
 
 .picture {
+    align-self: flex-start;
     display: block;
     width: 250px;
     object-fit: contain;
+}
+
+@media print {
+
+    h1 {
+        font-size: smaller;
+    }
+
+    .picture {
+        width: 100px;
+    }
+
+    .employee-info-container {
+        font-size: 0.8rem;
+    }
+
 }
