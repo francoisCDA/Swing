@@ -51,18 +51,22 @@ public class ControlePanel extends JPanel {
 
         printButton.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println(activeEmployee.toString());
+                //System.out.println(activeEmployee.toString());
                 //JOptionPane.showMessageDialog(ControlePanel.this, "Check your console");
-                try {
-                    File employeeHtml = HTMLUtil.mkEmployeeHtmlFile(employee.mkClone());
-                    System.out.println("Employee html file successfully create at : " + employeeHtml.getAbsolutePath());
+                if (activeEmployee.getId() != null) {
+                    try {
+                        File employeeHtml = HTMLUtil.mkEmployeeHtmlFile(employee.mkClone());
+                        System.out.println("Employee html file successfully create at : " + employeeHtml.getAbsolutePath());
 
-                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                        Desktop.getDesktop().browse(employeeHtml.toURI());
+                        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                            Desktop.getDesktop().browse(employeeHtml.toURI());
+                        }
+
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(modal, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
-
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(modal, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(ControlePanel.this,"You must create or view an employee before you can print.", "Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
 
@@ -78,7 +82,7 @@ public class ControlePanel extends JPanel {
                     searchField.setEnabled(false);
                     newButton.setText("Cancel");
                     newButton.setIcon(PhotoUtil.getIcone("src/main/resources/icone/bouton-supprimer.png",22));
-
+                    activeEmployee.setId(null);
                 } else {
                     saveButton.setEnabled(false);
                     updateButton.setEnabled(true);
@@ -86,9 +90,9 @@ public class ControlePanel extends JPanel {
                     searchField.setEnabled(true);
                     newButton.setText("New");
                     newButton.setIcon(PhotoUtil.getIcone("src/main/resources/icone/plus.png",22));
-
-                }
                     activeEmployee.reset();
+                }
+
             }
         });
 
@@ -145,7 +149,6 @@ public class ControlePanel extends JPanel {
                         activeEmployee.setPhotoPath(newPath);
                     }
 
-
                     if (employeeController.update(activeEmployee.mkClone())) {
 
                         EmployeTableModel tableModel = (EmployeTableModel) employeeTable.getModel();
@@ -172,8 +175,14 @@ public class ControlePanel extends JPanel {
 
                     if (confirm == JOptionPane.YES_OPTION) {
                        try {
+
                             if ( employeeController.removeEmployeeById(activeEmployee.getId()) ) {
+
+                                PhotoUtil.rmEmployeePicture(activeEmployee.getPhotoPath());
+                                HTMLUtil.rmHtmlEmployeeFile(activeEmployee.getId());
+
                                 JOptionPane.showMessageDialog(ControlePanel.this, "Employee deleted!");
+
                             } else {
                                 JOptionPane.showMessageDialog(ControlePanel.this, "An error occured! Check data");
                             }
@@ -181,7 +190,7 @@ public class ControlePanel extends JPanel {
                             EmployeTableModel tableModel = (EmployeTableModel) employeeTable.getModel();
                             tableModel.updListEmployee(employeeController.getEmployeeRows());
 
-                        } catch (SQLException ex) {
+                        } catch (SQLException | RuntimeException ex) {
                             JOptionPane.showMessageDialog(modal, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         } finally {
                            activeEmployee.reset();

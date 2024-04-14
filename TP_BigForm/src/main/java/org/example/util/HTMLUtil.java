@@ -104,4 +104,17 @@ public class HTMLUtil {
 
     }
 
+    public static void rmHtmlEmployeeFile(Integer id) {
+
+        String currentDirectory = System.getProperty("user.dir");
+
+        File htmlDirectory = new File(currentDirectory + File.separator + "html");
+
+        File employeeHtmlFile = new File(htmlDirectory, id + ".html");
+
+        if (employeeHtmlFile.exists()) {
+            employeeHtmlFile.delete();
+        }
+
+    }
 }

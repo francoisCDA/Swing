@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.dao.EmployeeDAO;
 import org.example.model.Employee;
+import org.example.util.PhotoUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,6 +54,14 @@ public class EmployeeController {
                 && employee.getStartDate() != null)
         ) {
             return false;
+        }
+
+        String actualPath = employeeDAO.getPathById(employee.getId());
+
+        if (actualPath != null ) {
+            if (!actualPath.equals(employee.getPhotoPath())) {
+                PhotoUtil.rmEmployeePicture(actualPath);
+            }
         }
 
         if ( employeeDAO.updateEmployee(employee) == 1) {

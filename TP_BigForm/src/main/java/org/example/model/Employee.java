@@ -1,6 +1,8 @@
 package org.example.model;
 
 
+import org.example.util.PhotoUtil;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -131,8 +133,10 @@ public class Employee  {
     }
 
     public void setPhotoPath(String photoPath) {
+
          String oldPhotoPath = this.photoPath;
          this.photoPath = photoPath;
+
          if (listeners.containsKey("photoPath")){
              PropertyChangeEvent event = new PropertyChangeEvent(this, "photoPath", oldPhotoPath, photoPath);
              listeners.get("photoPath").propertyChange(event);
@@ -239,6 +243,7 @@ public class Employee  {
     }
 
     private void setPhotoPathNoEvent(String photoPath) {
+
         this.photoPath = photoPath;
     }
 

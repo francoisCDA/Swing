@@ -178,4 +178,18 @@ public class EmployeeDAO {
         }
         return ret;
     }
+
+    public String getPathById(int employeeId) throws SQLException {
+        con = ConnectDB.getConnection();
+        String ret = null;
+
+        ps = con.prepareStatement("SELECT photoPath FROM employee WHERE id = ?" );
+        ps.setInt(1, employeeId);
+
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            ret = rs.getString("photoPath");
+        }
+        return ret;
+    }
 }

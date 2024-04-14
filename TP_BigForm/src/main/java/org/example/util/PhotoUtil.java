@@ -70,4 +70,22 @@ public class PhotoUtil {
         return null;
     }
 
+    public static boolean rmEmployeePicture(String picturePath) {
+
+        String currentDirectory = System.getProperty("user.dir");
+
+        String destDirectory = currentDirectory + File.separator + "employeePhotos" ;
+
+        if (!picturePath.startsWith(destDirectory)) {
+            return false;
+        }
+
+        File file = new File(picturePath);
+
+        if (file.exists()) {
+            return file.delete();
+        }
+        return false;
+    }
+
 }
