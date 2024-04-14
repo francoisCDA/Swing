@@ -18,4 +18,4 @@ create table employee (
 );
 
 
-select * from employee;
+-- select * from employee;

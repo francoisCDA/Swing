@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class ConnectDB {
 
     public static Connection getConnection() {
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String database = "bigform";
@@ -18,7 +17,5 @@ public class ConnectDB {
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException();
         }
-
-
     }
 }

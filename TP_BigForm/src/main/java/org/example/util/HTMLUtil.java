@@ -10,7 +10,18 @@ public class HTMLUtil {
 
     private static String cssRevalivPath = "../css/employee.css";
 
-    public static String mkEmployeeHtmlString(Employee employee) {
+    public static String mkEmployeeHtmlString(Employee employee) throws IOException {
+
+        String currentDirectory = System.getProperty("user.dir");
+
+        File cssDirectory = new File(currentDirectory + File.separator + "css");
+
+        if (!cssDirectory.exists()) {
+            if (cssDirectory.mkdir()) {
+                initEmployeeCssFile(cssDirectory.getAbsolutePath());
+            }
+        }
+
 
         StringBuilder employeeHtml = new StringBuilder();
 
@@ -80,6 +91,67 @@ public class HTMLUtil {
         return employeeHtml.toString();
     }
 
+    private static void initEmployeeCssFile(String absolutePath) throws IOException {
+
+        File cssEmployeeFile = new File(absolutePath+ File.separator + "employee.css");
+
+        StringBuilder cssBuilder = new StringBuilder();
+        cssBuilder.append("h1 {\n");
+        cssBuilder.append("    border-bottom: 2px solid black;\n");
+        cssBuilder.append("}\n");
+        cssBuilder.append("\n");
+        cssBuilder.append(".employee-container {\n");
+        cssBuilder.append("    display: flex;\n");
+        cssBuilder.append("    justify-content: space-evenly;\n");
+        cssBuilder.append("}\n");
+        cssBuilder.append("\n");
+        cssBuilder.append(".employee-info-container {\n");
+        cssBuilder.append("    font-size: 1.2rem;\n");
+        cssBuilder.append("}\n");
+        cssBuilder.append("\n");
+        cssBuilder.append(".employee-info {\n");
+        cssBuilder.append("    font-style: italic;\n");
+        cssBuilder.append("}\n");
+        cssBuilder.append("\n");
+        cssBuilder.append(".employee-data {\n");
+        cssBuilder.append("    font-weight: bold;\n");
+        cssBuilder.append("}\n");
+        cssBuilder.append("\n");
+        cssBuilder.append(".picture {\n");
+        cssBuilder.append("    align-self: flex-start;\n");
+        cssBuilder.append("    display: block;\n");
+        cssBuilder.append("    width: 250px;\n");
+        cssBuilder.append("    object-fit: contain;\n");
+        cssBuilder.append("}\n");
+        cssBuilder.append("\n");
+        cssBuilder.append("@media print {\n");
+        cssBuilder.append("    h1 {\n");
+        cssBuilder.append("        font-size: smaller;\n");
+        cssBuilder.append("    }\n");
+        cssBuilder.append("\n");
+        cssBuilder.append("    .picture {\n");
+        cssBuilder.append("        width: 100px;\n");
+        cssBuilder.append("    }\n");
+        cssBuilder.append("\n");
+        cssBuilder.append("    .employee-info-container {\n");
+        cssBuilder.append("        font-size: 0.8rem;\n");
+        cssBuilder.append("    }\n");
+        cssBuilder.append("}");
+
+        String cssString = cssBuilder.toString();
+
+
+
+
+        try (FileWriter fileWriter = new FileWriter(cssEmployeeFile)) {
+            fileWriter.write(cssString);
+
+        } catch (IOException e) {
+            throw e;
+        }
+
+    }
+
 
     public static File mkEmployeeHtmlFile(Employee employee) throws IOException {
 
@@ -99,7 +171,7 @@ public class HTMLUtil {
             fileWriter.write(htmlStr);
             return employeeHtmlFile;
         } catch (IOException e) {
-            throw new IOException(e);
+            throw e;
         }
 
     }

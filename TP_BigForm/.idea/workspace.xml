@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5677b2a1-286b-42e4-ba2a-560a481ff5ab" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bigform.sql" beforeDir="false" afterPath="$PROJECT_DIR$/bigform.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/employee.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/employee.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/ConnectDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/ConnectDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/HTMLUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HTMLUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/view/EmployeeFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/view/EmployeeFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +31,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="MavenRunner">
+    <option name="delegateBuildToMaven" value="true" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -37,6 +48,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.EmployeeFrame.executor": "Debug",
+    "Application.Main.executor": "Run",
+    "Maven.Main.executor": "Run",
+    "Maven.TP_BigForm [clean,install...].executor": "Run",
+    "Maven.TP_BigForm [compile].executor": "Run",
+    "Maven.TP_BigForm [install,--non-recursive].executor": "Run",
+    "Maven.TP_BigForm [install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "extract.method.default.visibility": "private",
     "git-widget-placeholder": "main",
@@ -47,6 +64,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.runner",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -98,7 +119,7 @@
       <workItem from="1712861017253" duration="10524000" />
       <workItem from="1712903073850" duration="40345000" />
       <workItem from="1712990874836" duration="41575000" />
-      <workItem from="1713079383622" duration="21451000" />
+      <workItem from="1713079383622" duration="33724000" />
     </task>
     <servers />
   </component>

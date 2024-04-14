@@ -70,12 +70,12 @@ public class EmployeeFrame extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new EmployeeFrame().setVisible(true);;
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                new EmployeeFrame().setVisible(true);;
+//            }
+//        });
+//    }
 
 }
