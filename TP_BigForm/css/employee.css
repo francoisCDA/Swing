@@ -1,0 +1,27 @@
+h1 {
+    border-bottom: 2px solid black;
+}
+
+.employee-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.employee-info-container {
+    font-size: 1.2rem;
+}
+
+.employee-info {
+    font-style: italic;
+}
+
+.employee-data {
+    font-weight: bold;
+}
+
+.picture {
+    display: block;
+    width: 250px;
+    object-fit: contain;
+}

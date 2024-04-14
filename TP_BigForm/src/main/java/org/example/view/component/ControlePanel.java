@@ -2,6 +2,7 @@ package org.example.view.component;
 
 import org.example.controller.EmployeeController;
 import org.example.model.Employee;
+import org.example.util.HTMLUtil;
 import org.example.util.PhotoUtil;
 
 import javax.swing.*;
@@ -50,7 +51,12 @@ public class ControlePanel extends JPanel {
         printButton.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(activeEmployee.toString());
-                JOptionPane.showMessageDialog(ControlePanel.this, "Check your console");
+                //JOptionPane.showMessageDialog(ControlePanel.this, "Check your console");
+                try {
+                    HTMLUtil.mkEmployeeHtmlFile(employee.mkClone());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(modal, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
 
         });
