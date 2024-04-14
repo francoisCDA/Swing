@@ -26,7 +26,7 @@ public class HTMLUtil {
         employeeHtml.append("<div class=\"employee-container\">");
         employeeHtml.append("<div class=\"employee-info-container\">");
 
-        employeeHtml.append("<p><span class=\"employee-info\">employee id : </span> ");
+        employeeHtml.append("<p><span class=\"employee-info\">Employee id : </span> ");
         employeeHtml.append("<span class=\"employee-data\">");
         employeeHtml.append(employee.getId());
         employeeHtml.append("</span></p>");

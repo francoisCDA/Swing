@@ -12,6 +12,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -53,7 +54,13 @@ public class ControlePanel extends JPanel {
                 System.out.println(activeEmployee.toString());
                 //JOptionPane.showMessageDialog(ControlePanel.this, "Check your console");
                 try {
-                    HTMLUtil.mkEmployeeHtmlFile(employee.mkClone());
+                    File employeeHtml = HTMLUtil.mkEmployeeHtmlFile(employee.mkClone());
+                    System.out.println("Employee html file successfully create at : " + employeeHtml.getAbsolutePath());
+
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                        Desktop.getDesktop().browse(employeeHtml.toURI());
+                    }
+
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(modal, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
