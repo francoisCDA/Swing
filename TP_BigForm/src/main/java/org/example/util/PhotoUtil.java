@@ -55,7 +55,6 @@ public class PhotoUtil {
             return new ImageIcon(scaleImage);
         }
          return null;
-
     }
 
     public static ImageIcon getIcone(String path, int size) {
